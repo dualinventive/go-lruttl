@@ -73,3 +73,18 @@ func TestRemove(t *testing.T) {
 		t.Fatal("TestRemove returned a removed entry")
 	}
 }
+
+func TestTTL(t *testing.T) {
+	lru := New(0, time.Millisecond * 100)
+	lru.Add("myKey", 1234)
+	if val, ok := lru.Get("myKey"); !ok {
+		t.Fatal("TestRemove returned no match")
+	} else if val != 1234 {
+		t.Fatalf("TestRemove failed.  Expected %d, got %v", 1234, val)
+	}
+
+	time.Sleep(1 * time.Second)
+	if _, ok := lru.Get("myKey"); ok {
+		t.Fatal("TestRemove returned a removed entry")
+	}
+}
