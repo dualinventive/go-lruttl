@@ -78,13 +78,55 @@ func TestTTL(t *testing.T) {
 	lru := New(0, time.Millisecond*100)
 	lru.Add("myKey", 1234)
 	if val, ok := lru.Get("myKey"); !ok {
-		t.Fatal("TestRemove returned no match")
+		t.Fatal("TestTTL returned no match")
 	} else if val != 1234 {
-		t.Fatalf("TestRemove failed.  Expected %d, got %v", 1234, val)
+		t.Fatalf("TestTTL failed.  Expected %d, got %v", 1234, val)
 	}
 
 	time.Sleep(1 * time.Second)
 	if _, ok := lru.Get("myKey"); ok {
-		t.Fatal("TestRemove returned a removed entry")
+		t.Fatal("TestTTL returned a removed entry")
 	}
+}
+
+func TestTTLReset(t *testing.T) {
+	lru := New(0, time.Second)
+	lru.Add("myKey", 1234)
+	if val, ok := lru.Get("myKey"); !ok {
+		t.Fatal("TestTTLReset returned no match")
+	} else if val != 1234 {
+		t.Fatalf("TestTTLReset failed.  Expected %d, got %v", 1234, val)
+	}
+
+	time.Sleep(500 * time.Millisecond)
+	lru.Add("myKey", 5678)
+	if val, ok := lru.Get("myKey"); !ok {
+		t.Fatal("TestTTLReset returned no match")
+	} else if val != 5678 {
+		t.Fatalf("TestTTLReset failed.  Expected %d, got %v", 5678, val)
+	}
+
+	time.Sleep(500 * time.Millisecond)
+	if val, ok := lru.Get("myKey"); !ok {
+		t.Fatal("TestTTLReset returned no match")
+	} else if val != 5678 {
+		t.Fatalf("TestTTLReset failed.  Expected %d, got %v", 5678, val)
+	}
+	time.Sleep(700 * time.Millisecond)
+
+	if _, ok := lru.Get("myKey"); ok {
+		t.Fatal("TestTTLReset returned a removed entry")
+	}
+}
+
+func TestAddNilCache(t *testing.T) {
+	c := New(0, time.Hour)
+	c.Clear()
+	c.Add("a", 1)
+	c.Clear()
+	if _, ok := c.Get("a"); ok {
+		t.Fatal("TestAddNilCache returned a removed entry")
+	}
+	c.Clear()
+	c.Remove("a")
 }
