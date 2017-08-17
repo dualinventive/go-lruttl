@@ -130,3 +130,15 @@ func TestAddNilCache(t *testing.T) {
 	c.Clear()
 	c.Remove("a")
 }
+
+func TestAutoPrune(t *testing.T) {
+	c := New(1, time.Hour)
+	c.Add("a", 1)
+	if _, ok := c.Get("a"); !ok {
+		t.Fatal("TestAddNilCache returned no entry")
+	}
+	c.Add("b", 2)
+	if _, ok := c.Get("a"); ok {
+		t.Fatal("TestAddNilCache returned no entry")
+	}
+}
