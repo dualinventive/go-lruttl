@@ -75,7 +75,7 @@ func TestRemove(t *testing.T) {
 }
 
 func TestTTL(t *testing.T) {
-	lru := New(0, time.Millisecond * 100)
+	lru := New(0, time.Millisecond*100)
 	lru.Add("myKey", 1234)
 	if val, ok := lru.Get("myKey"); !ok {
 		t.Fatal("TestRemove returned no match")
