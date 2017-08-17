@@ -7,3 +7,4 @@ LRU TTL
 [![codecov](https://codecov.io/gh/dualinventive/go-lruttl/branch/master/graph/badge.svg)](https://codecov.io/gh/dualinventive/go-lruttl)
 
 Based on https://github.com/golang/groupcache/tree/master/lru and added TTL feature
+
