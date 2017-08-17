@@ -129,6 +129,8 @@ func TestAddNilCache(t *testing.T) {
 	}
 	c.Clear()
 	c.Remove("a")
+	c.Clear()
+	c.RemoveOldest()
 }
 
 func TestAutoPrune(t *testing.T) {
